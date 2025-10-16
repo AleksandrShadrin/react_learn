@@ -1,0 +1,39 @@
+import FontSizeContextProvider from "./tasks/useContext/FontSizeContext/FontSizeContextProvider";
+import Text from "./tasks/useContext/FontSizeContext/Text";
+import Settings from "./tasks/useContext/Settings";
+import ThemeContextProvider from "./tasks/useContext/ThemeContext/ThemeContextProvider";
+import Fetch from "./tasks/useEffect/Fetch";
+import ComponentMounted from "./tasks/useEffect/MountedComponent";
+import WindowResizedListener from "./tasks/useEffect/WindowResizedListener";
+import Counter from "./tasks/useReducer/Counter";
+import TodoList from "./tasks/useReducer/TodoList/TodoList";
+import ColorPicker from "./tasks/useState/colorPicker/ColorPicker";
+import { Header } from "./tasks/useState/header/Header";
+import { Toggle } from "./tasks/useState/toggle/Toggle";
+
+function App() {
+
+	return (
+		<>
+			<ThemeContextProvider theme="light" >
+				<FontSizeContextProvider>
+					<div>
+						<Settings />
+						<Text text="text1" />
+						<Text text="text2" />
+						<Counter />
+						<Toggle enabled={true} />
+						<Header />
+						<ColorPicker r={0} g={0} b={0} />
+						<ComponentMounted />
+						<Fetch />
+						<WindowResizedListener />
+						<TodoList />
+					</div>
+				</FontSizeContextProvider>
+			</ThemeContextProvider>
+		</>
+	);
+}
+
+export default App;
