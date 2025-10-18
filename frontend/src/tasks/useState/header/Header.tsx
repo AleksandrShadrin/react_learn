@@ -16,8 +16,6 @@ export function Header(): ReactElement {
 		setHeader(e.currentTarget.value);
 
 	return (
-		<>
-			<input type="text" onChange={f} />
-		</>
+		<input type="text" onChange={f} />
 	);
 }

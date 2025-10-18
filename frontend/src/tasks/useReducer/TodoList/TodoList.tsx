@@ -1,46 +1,59 @@
 import { useReducer, type ReactElement } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 type Todo = {
-    id: number,
-    title: string,
-    enabled: boolean
-}
-
-type TodoAction = {
-    type: 'ADD',
-    todo: {
-        title: string
-    }
-} | {
-    type: 'REMOVE',
-    todoId: number
-} | {
-    type: 'TOGGLE',
-    todoId: number
+    id: string;
+    title: string;
+    completed: boolean;
 };
 
-function todosDispatcher(state: Todo[], args: TodoAction) {
-    switch (args.type) {
-        case "ADD": {
-            const id = Math.max(...state.map(x => x.id)) + 1;
-            return [...state, { ...args.todo, enabled: true, id }];
-        }
-        case "REMOVE": return state.filter(x => x.id !== args.todoId);
-        case "TOGGLE": return state.map(x => x.id == args.todoId ? { ...x, enabled: !x.enabled } : x);
-        default: throw new Error("Unreachable code");
+type TodoAction =
+    | { type: 'ADD'; payload: { title: string } }
+    | { type: 'REMOVE'; payload: { id: string } }
+    | { type: 'TOGGLE'; payload: { id: string } };
 
+function todoReducer(state: Todo[], action: TodoAction): Todo[] {
+    switch (action.type) {
+        case 'ADD': {
+            const newTodo: Todo = {
+                id: uuidv4(),
+                title: action.payload.title.trim(),
+                completed: false,
+            };
+            return [...state, newTodo];
+        }
+        case 'REMOVE':
+            return state.filter(todo => todo.id !== action.payload.id);
+        case 'TOGGLE':
+            return state.map(todo =>
+                todo.id === action.payload.id
+                    ? { ...todo, completed: !todo.completed }
+                    : todo
+            );
+        default:
+            throw new Error('Unhandled action type');
     }
 }
 
+
 export default function TodoList(): ReactElement {
-    const [todos, dispatchTodosAction] = useReducer(todosDispatcher, []);
+    const [todos, dispatchTodosAction] = useReducer(todoReducer, []);
+
+    function handleCompleted(id: string) {
+        dispatchTodosAction({ type: 'TOGGLE', payload: { id } });
+    }
+
+    function handleRemove(id: string): void {
+        return dispatchTodosAction({ type: 'REMOVE', payload: { id } });
+    }
 
     return <>
         <ul>
             {todos.map(x =>
-                <li id={x.id.toString()}>
-                    <p style={{ textDecoration: x.enabled ? '' : "line-through" }}>{x.title}</p>
-                    <button onClick={() => dispatchTodosAction({ type: 'TOGGLE', todoId: x.id })}>{x.enabled ? 'on' : 'off'}</button>
+                <li key={x.id.toString()}>
+                    <p style={{ textDecoration: x.completed ? '' : "line-through" }}>{x.title}</p>
+                    <button onClick={() => handleCompleted(x.id)}>{x.completed ? 'Mark not completed' : 'Mark completed'}</button>
+                    <button onClick={() => handleRemove(x.id)}>Remove</button>
                 </li>)}
         </ul>
 
@@ -51,7 +64,7 @@ export default function TodoList(): ReactElement {
                 return;
 
             dispatchTodosAction({
-                type: 'ADD', todo: {
+                type: 'ADD', payload: {
                     title,
                 }
             })
@@ -62,4 +75,5 @@ export default function TodoList(): ReactElement {
             <button type="submit">submit</button>
         </form>
     </>
+
 }
