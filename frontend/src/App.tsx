@@ -9,6 +9,8 @@ import Parent from "./tasks/useMemo/Parent";
 import Counter from "./tasks/useReducer/Counter";
 import Form from "./tasks/useReducer/Form/Form";
 import TodoList from "./tasks/useReducer/TodoList/TodoList";
+import Input from "./tasks/useRef/Input";
+import StopWatch from "./tasks/useRef/StopWatch";
 import ColorPicker from "./tasks/useState/colorPicker/ColorPicker";
 import { Header } from "./tasks/useState/header/Header";
 import { Toggle } from "./tasks/useState/toggle/Toggle";
@@ -32,6 +34,8 @@ function App() {
 					<TodoList />
 					<Form />
 					<Parent />
+					<Input focus={true} />
+					<StopWatch />
 				</div>
 			</FontSizeContextProvider>
 		</ThemeContextProvider>

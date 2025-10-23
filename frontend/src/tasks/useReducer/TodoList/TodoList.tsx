@@ -52,7 +52,7 @@ export default function TodoList(): ReactElement {
             {todos.map(x =>
                 <li key={x.id.toString()}>
                     <p style={{ textDecoration: x.completed ? '' : "line-through" }}>{x.title}</p>
-                    <button onClick={() => handleCompleted(x.id)}>{x.completed ? 'Mark not completed' : 'Mark completed'}</button>
+                    <button onClick={() => handleCompleted(x.id)}>{!x.completed ? 'Mark not completed' : 'Mark completed'}</button>
                     <button onClick={() => handleRemove(x.id)}>Remove</button>
                 </li>)}
         </ul>
