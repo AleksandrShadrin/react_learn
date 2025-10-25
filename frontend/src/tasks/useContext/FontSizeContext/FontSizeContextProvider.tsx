@@ -1,13 +1,18 @@
-import { useState, type PropsWithChildren } from "react";
-import { FontSizeContext } from "./FontSizeContext";
+import { type PropsWithChildren, useState } from 'react';
+
+import { FontSizeContext } from './FontSizeContext';
 
 export default function FontSizeContextProvider(props: PropsWithChildren) {
-    const [fontSize, setFontSize] = useState('14px');
+  const [fontSize, setFontSize] = useState('14px');
 
-    return <FontSizeContext value={{
+  return (
+    <FontSizeContext
+      value={{
         fontSize: fontSize,
-        setFontSize
-    }}>
-        {props.children}
+        setFontSize,
+      }}
+    >
+      {props.children}
     </FontSizeContext>
+  );
 }

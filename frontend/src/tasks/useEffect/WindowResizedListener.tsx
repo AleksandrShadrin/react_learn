@@ -1,27 +1,28 @@
-import { useEffect, useState, type ReactElement } from "react";
+import { type ReactElement, useEffect, useState } from 'react';
 
 export default function WindowResizedListener(): ReactElement {
-    const [windowSize, setWindowSize] = useState({
+  const [windowSize, setWindowSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+
+  useEffect(() => {
+    const onWindowResized = () => {
+      setWindowSize({
         width: window.innerWidth,
-        height: window.innerHeight
-    })
+        height: window.innerHeight,
+      });
+    };
 
-    useEffect(() => {
-        const onWindowResized = () => {
-            setWindowSize({
-                width: window.innerWidth,
-                height: window.innerHeight
-            });
-        };
+    addEventListener('resize', onWindowResized);
 
-        addEventListener('resize', onWindowResized);
+    return () => removeEventListener('resize', onWindowResized);
+  }, []);
 
-        return () => removeEventListener('resize', onWindowResized);
-    }, [])
-
-    return (
-        <>
-            <div>width: {windowSize.width}</div>
-            <div>height:{windowSize.height}</div>
-        </>)
+  return (
+    <>
+      <div>width: {windowSize.width}</div>
+      <div>height:{windowSize.height}</div>
+    </>
+  );
 }
