@@ -15,7 +15,7 @@
     "test": "npm run test --workspace=backend && npm run test --workspace=frontend"
   },
   "devDependencies": {
-    "prettier": "^3.4.2",
-    "@trivago/prettier-plugin-sort-imports": "^5.2.0"
+    "@trivago/prettier-plugin-sort-imports": "^5.2.0",
+    "prettier": "^3.4.2"
   }
 }
