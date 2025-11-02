@@ -50,7 +50,3 @@ node_modules/
 .Trashes
 ehthumbs.db
 Thumbs.db
-
-# Backend files with decorators (temporary ignore until prettier supports them)
-backend/src/**/*.ts
-backend/test/**/*.ts
