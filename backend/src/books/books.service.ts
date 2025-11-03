@@ -2,1164 +2,1220 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { randomUUID } from 'crypto';
 
 export interface Book {
-  id: string;
-  title: string;
-  author: string;
-  category: string;
-  isbn: string;
-  publishedYear: number;
-  coverImage: string;
-  description: string;
+    id: string;
+    title: string;
+    author: string;
+    category: string;
+    isbn: string;
+    publishedYear: number;
+    coverImage: string;
+    description: string;
 }
 
 @Injectable()
 export class BooksService {
-  private books: Book[] = [
-    {
-      id: '1',
-      title: 'Learning React',
-      author: 'Alex Banks, Eve Porcello',
-      category: 'programming',
-      isbn: '978-1492051725',
-      publishedYear: 2020,
-      coverImage: 'https://placehold.co/150?text=Learning+React',
-      description: 'A hands-on introduction to React and modern JavaScript.',
-    },
-    {
-      id: '2',
-      title: '1984',
-      author: 'George Orwell',
-      category: 'fiction',
-      isbn: '978-0451524935',
-      publishedYear: 1949,
-      coverImage: 'https://placehold.co/150?text=1984',
-      description: 'A dystopian social science fiction novel.',
-    },
-    {
-      id: '3',
-      title: 'Sapiens: A Brief History of Humankind',
-      author: 'Yuval Noah Harari',
-      category: 'history',
-      isbn: '978-0062316097',
-      publishedYear: 2011,
-      coverImage: 'https://placehold.co/150?text=Sapiens',
-      description:
-        'A survey of the history of humankind from the evolution of archaic human species.',
-    },
-    {
-      id: '4',
-      title: 'The Pragmatic Programmer',
-      author: 'David Thomas, Andrew Hunt',
-      category: 'programming',
-      isbn: '978-0135957059',
-      publishedYear: 2019,
-      coverImage: 'https://placehold.co/150?text=Pragmatic+Programmer',
-      description: 'Your journey to mastery in software development.',
-    },
-    {
-      id: '5',
-      title: 'Introduction to TypeScript',
-      author: 'Daniel Russo',
-      category: 'programming',
-      isbn: '978-1492086670',
-      publishedYear: 2021,
-      coverImage: 'https://placehold.co/150?text=Introduction+to+TypeScript',
-      description:
-        'Foundations and practical patterns for building scalable TypeScript apps.',
-    },
-    {
-      id: '6',
-      title: 'The Silent Garden',
-      author: 'Maya Thornton',
-      category: 'fiction',
-      isbn: '978-1982045631',
-      publishedYear: 2018,
-      coverImage: 'https://placehold.co/150?text=The+Silent+Garden',
-      description: 'An intimate novel about family secrets and reconciliation.',
-    },
-    {
-      id: '7',
-      title: 'Physics Essentials',
-      author: 'R. K. Mendoza',
-      category: 'science',
-      isbn: '978-0262538473',
-      publishedYear: 2015,
-      coverImage: 'https://placehold.co/150?text=Physics+Essentials',
-      description: 'A clear overview of classical and modern physics concepts.',
-    },
-    {
-      id: '8',
-      title: 'Modern Art: A Short Introduction',
-      author: 'Lena Fischer',
-      category: 'art',
-      isbn: '978-0674979805',
-      publishedYear: 2013,
-      coverImage: 'https://placehold.co/150?text=Modern+Art',
-      description: 'Survey of modern art movements and influential artists.',
-    },
-    {
-      id: '9',
-      title: 'Deep Work Habits',
-      author: 'Samuel Price',
-      category: 'self-help',
-      isbn: '978-0143139045',
-      publishedYear: 2020,
-      coverImage: 'https://placehold.co/150?text=Deep+Work+Habits',
-      description:
-        'Practical strategies to increase focus and productive work time.',
-    },
-    {
-      id: '10',
-      title: 'Gardens of Europe',
-      author: 'Adele Korhonen',
-      category: 'travel',
-      isbn: '978-0307958495',
-      publishedYear: 2016,
-      coverImage: 'https://placehold.co/150?text=Gardens+of+Europe',
-      description: "A photographic tour of Europe's most beautiful gardens.",
-    },
-    {
-      id: '11',
-      title: 'SQL for Everyone',
-      author: 'Priya Menon',
-      category: 'programming',
-      isbn: '978-1593278856',
-      publishedYear: 2019,
-      coverImage: 'https://placehold.co/150?text=SQL+for+Everyone',
-      description: 'Beginner-friendly SQL with real-world query examples.',
-    },
-    {
-      id: '12',
-      title: 'The Lighthouse Keeper',
-      author: 'Jonas Reed',
-      category: 'fiction',
-      isbn: '978-0525567326',
-      publishedYear: 2022,
-      coverImage: 'https://placehold.co/150?text=The+Lighthouse+Keeper',
-      description: 'A coastal mystery about loss, memory, and hope.',
-    },
-    {
-      id: '13',
-      title: 'World War II: A Concise History',
-      author: 'Eleanor Shaw',
-      category: 'history',
-      isbn: '978-0143119420',
-      publishedYear: 2010,
-      coverImage: 'https://placehold.co/150?text=WWII+Concise+History',
-      description: 'A compact overview of the major events and consequences.',
-    },
-    {
-      id: '14',
-      title: 'Cooking for Busy People',
-      author: 'Marco Silva',
-      category: 'cooking',
-      isbn: '978-0399589073',
-      publishedYear: 2017,
-      coverImage: 'https://placehold.co/150?text=Cooking+for+Busy+People',
-      description: 'Fast, healthy recipes for weeknight meals.',
-    },
-    {
-      id: '15',
-      title: 'The Ecology Handbook',
-      author: 'Greta Olsson',
-      category: 'science',
-      isbn: '978-0262039243',
-      publishedYear: 2014,
-      coverImage: 'https://placehold.co/150?text=Ecology+Handbook',
-      description: 'Key principles of ecology and environmental science.',
-    },
-    {
-      id: '16',
-      title: 'Mastering Algorithms',
-      author: 'Ibrahim Khan',
-      category: 'programming',
-      isbn: '978-0134757599',
-      publishedYear: 2020,
-      coverImage: 'https://placehold.co/150?text=Mastering+Algorithms',
-      description:
-        'Algorithms explained with code examples and complexity analysis.',
-    },
-    {
-      id: '17',
-      title: 'Midnight on the Avenue',
-      author: 'Harper Lane',
-      category: 'mystery',
-      isbn: '978-0345546052',
-      publishedYear: 2011,
-      coverImage: 'https://placehold.co/150?text=Midnight+on+the+Avenue',
-      description: 'A detective novel with twists in an urban setting.',
-    },
-    {
-      id: '18',
-      title: 'Startup Finance 101',
-      author: 'Ravi Patel',
-      category: 'business',
-      isbn: '978-1119541061',
-      publishedYear: 2021,
-      coverImage: 'https://placehold.co/150?text=Startup+Finance+101',
-      description: 'Essential financial principles for early-stage startups.',
-    },
-    {
-      id: '19',
-      title: 'The Poetry of Rain',
-      author: 'Clara Mendes',
-      category: 'poetry',
-      isbn: '978-1571312923',
-      publishedYear: 2009,
-      coverImage: 'https://placehold.co/150?text=Poetry+of+Rain',
-      description: 'A collection of nature-inspired poems.',
-    },
-    {
-      id: '20',
-      title: "Children's First Atlas",
-      author: 'Olivia Park',
-      category: 'children',
-      isbn: '978-0525555379',
-      publishedYear: 2018,
-      coverImage: 'https://placehold.co/150?text=Childrens+First+Atlas',
-      description: 'Colorful maps and facts for young explorers.',
-    },
-    {
-      id: '21',
-      title: "The UX Designer's Notebook",
-      author: 'Benita Cruz',
-      category: 'design',
-      isbn: '978-1491991755',
-      publishedYear: 2016,
-      coverImage: 'https://placehold.co/150?text=UX+Designers+Notebook',
-      description: 'Practical tips and exercises for user-centered design.',
-    },
-    {
-      id: '22',
-      title: 'Quantum Computing Explained',
-      author: 'Xiao Li',
-      category: 'science',
-      isbn: '978-0262039250',
-      publishedYear: 2022,
-      coverImage: 'https://placehold.co/150?text=Quantum+Computing+Explained',
-      description:
-        'An approachable introduction to quantum algorithms and hardware.',
-    },
-    {
-      id: '23',
-      title: 'The Last Orchard',
-      author: 'Fiona Doyle',
-      category: 'fiction',
-      isbn: '978-1501177202',
-      publishedYear: 2013,
-      coverImage: 'https://placehold.co/150?text=The+Last+Orchard',
-      description: 'A lyrical tale about stewardship, inheritance, and change.',
-    },
-    {
-      id: '24',
-      title: 'Mindful Leadership',
-      author: 'Kenji Watanabe',
-      category: 'business',
-      isbn: '978-1594633669',
-      publishedYear: 2019,
-      coverImage: 'https://placehold.co/150?text=Mindful+Leadership',
-      description:
-        'How mindfulness practices improve leadership and team culture.',
-    },
-    {
-      id: '25',
-      title: 'Historic Cities of the World',
-      author: 'Natalie Brooks',
-      category: 'history',
-      isbn: '978-0307269997',
-      publishedYear: 2012,
-      coverImage: 'https://placehold.co/150?text=Historic+Cities',
-      description: 'Profiles of cities that shaped world history.',
-    },
-    {
-      id: '26',
-      title: 'React Patterns',
-      author: 'Oliver Grant',
-      category: 'programming',
-      isbn: '978-1718502565',
-      publishedYear: 2021,
-      coverImage: 'https://placehold.co/150?text=React+Patterns',
-      description:
-        'Common design patterns and anti-patterns in React development.',
-    },
-    {
-      id: '27',
-      title: "The Mapmaker's Daughter",
-      author: 'Renee Alvarez',
-      category: 'fiction',
-      isbn: '978-0804176130',
-      publishedYear: 2014,
-      coverImage: 'https://placehold.co/150?text=The+Mapmakers+Daughter',
-      description: 'A historical novel about exploration and family ties.',
-    },
-    {
-      id: '28',
-      title: 'Data Visualization Handbook',
-      author: 'Marcus Blum',
-      category: 'design',
-      isbn: '978-1492078633',
-      publishedYear: 2018,
-      coverImage: 'https://placehold.co/150?text=Data+Visualization+Handbook',
-      description: 'Principles and tools for telling stories with data.',
-    },
-    {
-      id: '29',
-      title: 'Meditations for Busy Minds',
-      author: 'Aisha Rahman',
-      category: 'self-help',
-      isbn: '978-1982101416',
-      publishedYear: 2020,
-      coverImage: 'https://placehold.co/150?text=Meditations+for+Busy+Minds',
-      description: 'Short meditation exercises for daily calm.',
-    },
-    {
-      id: '30',
-      title: "The Inventor's Journey",
-      author: 'Peter Lang',
-      category: 'biography',
-      isbn: '978-0525538077',
-      publishedYear: 2017,
-      coverImage: 'https://placehold.co/150?text=The+Inventors+Journey',
-      description: 'A biography following the life of a modern inventor.',
-    },
-    {
-      id: '31',
-      title: 'Algorithms in Practice',
-      author: 'Nora Abdel',
-      category: 'programming',
-      isbn: '978-0134093413',
-      publishedYear: 2016,
-      coverImage: 'https://placehold.co/150?text=Algorithms+in+Practice',
-      description: 'Applied algorithms with performance considerations.',
-    },
-    {
-      id: '32',
-      title: 'The Blue Sparrow',
-      author: 'Colin Marks',
-      category: 'fiction',
-      isbn: '978-1250074278',
-      publishedYear: 2015,
-      coverImage: 'https://placehold.co/150?text=The+Blue+Sparrow',
-      description: 'A coming-of-age story set in a small coastal town.',
-    },
-    {
-      id: '33',
-      title: 'Nutrition Simplified',
-      author: 'Dr. Lena Ho',
-      category: 'health',
-      isbn: '978-1592339720',
-      publishedYear: 2018,
-      coverImage: 'https://placehold.co/150?text=Nutrition+Simplified',
-      description: 'Evidence-based advice for balanced eating and wellness.',
-    },
-    {
-      id: '34',
-      title: 'The Algorithmic Trader',
-      author: 'Marcus D. Voss',
-      category: 'business',
-      isbn: '978-1119487053',
-      publishedYear: 2019,
-      coverImage: 'https://placehold.co/150?text=Algorithmic+Trader',
-      description: 'Strategies and technologies for automated trading systems.',
-    },
-    {
-      id: '35',
-      title: 'Sketching for Beginners',
-      author: 'Yumi Tanaka',
-      category: 'art',
-      isbn: '978-1598637458',
-      publishedYear: 2011,
-      coverImage: 'https://placehold.co/150?text=Sketching+for+Beginners',
-      description: 'Basic techniques to start sketching confidently.',
-    },
-    {
-      id: '36',
-      title: 'The Last Lighthouse',
-      author: 'Gareth Moore',
-      category: 'mystery',
-      isbn: '978-0525559476',
-      publishedYear: 2020,
-      coverImage: 'https://placehold.co/150?text=The+Last+Lighthouse',
-      description: 'A thriller centered on a remote coastal beacon.',
-    },
-    {
-      id: '37',
-      title: 'Practical Kubernetes',
-      author: 'Sofia Ramez',
-      category: 'programming',
-      isbn: '978-1492051916',
-      publishedYear: 2021,
-      coverImage: 'https://placehold.co/150?text=Practical+Kubernetes',
-      description:
-        'Hands-on guide to deploying and managing containerized apps.',
-    },
-    {
-      id: '38',
-      title: 'Echoes of Winter',
-      author: "Niall O'Connor",
-      category: 'fiction',
-      isbn: '978-0452296610',
-      publishedYear: 2012,
-      coverImage: 'https://placehold.co/150?text=Echoes+of+Winter',
-      description: 'Interwoven stories of love and loss across decades.',
-    },
-    {
-      id: '39',
-      title: 'Botany Field Guide',
-      author: 'Helena Moretti',
-      category: 'science',
-      isbn: '978-0691169111',
-      publishedYear: 2014,
-      coverImage: 'https://placehold.co/150?text=Botany+Field+Guide',
-      description: 'Identification guide for common plants and flora.',
-    },
-    {
-      id: '40',
-      title: 'The Portfolio Investor',
-      author: 'Derek Finch',
-      category: 'business',
-      isbn: '978-0738212706',
-      publishedYear: 2016,
-      coverImage: 'https://placehold.co/150?text=Portfolio+Investor',
-      description: 'Principles for building and managing long-term portfolios.',
-    },
-    {
-      id: '41',
-      title: 'Tiny Tales for Kids',
-      author: 'Mira Patel',
-      category: 'children',
-      isbn: '978-0062835398',
-      publishedYear: 2019,
-      coverImage: 'https://placehold.co/150?text=Tiny+Tales+for+Kids',
-      description: 'Short bedtime stories for young readers.',
-    },
-    {
-      id: '42',
-      title: 'Design Systems at Scale',
-      author: 'Oliver Creed',
-      category: 'design',
-      isbn: '978-1492046899',
-      publishedYear: 2020,
-      coverImage: 'https://placehold.co/150?text=Design+Systems+at+Scale',
-      description: 'How to create and maintain scalable design systems.',
-    },
-    {
-      id: '43',
-      title: 'The Forgotten Monastery',
-      author: 'S. R. Elgar',
-      category: 'history',
-      isbn: '978-0307743657',
-      publishedYear: 2010,
-      coverImage: 'https://placehold.co/150?text=Forgotten+Monastery',
-      description: "Exploration of a remote monastery's medieval past.",
-    },
-    {
-      id: '44',
-      title: 'Intro to Machine Learning',
-      author: 'Hannah Kim',
-      category: 'programming',
-      isbn: '978-0262035617',
-      publishedYear: 2018,
-      coverImage: 'https://placehold.co/150?text=Intro+to+Machine+Learning',
-      description: 'Key ML concepts, algorithms, and practical examples.',
-    },
-    {
-      id: '45',
-      title: 'The Rosewood Key',
-      author: 'Gideon Blake',
-      category: 'fantasy',
-      isbn: '978-1250190979',
-      publishedYear: 2017,
-      coverImage: 'https://placehold.co/150?text=The+Rosewood+Key',
-      description: 'A fantasy adventure about a lost artifact and destiny.',
-    },
-    {
-      id: '46',
-      title: 'Urban Bike Guide',
-      author: 'Sana Iqbal',
-      category: 'travel',
-      isbn: '978-1612438765',
-      publishedYear: 2021,
-      coverImage: 'https://placehold.co/150?text=Urban+Bike+Guide',
-      description: 'Routes, safety tips, and cycling culture in cities.',
-    },
-    {
-      id: '47',
-      title: 'The Ethics of AI',
-      author: 'Dr. Felix Romero',
-      category: 'philosophy',
-      isbn: '978-1108465076',
-      publishedYear: 2022,
-      coverImage: 'https://placehold.co/150?text=Ethics+of+AI',
-      description: 'A deep look at moral questions raised by AI systems.',
-    },
-    {
-      id: '48',
-      title: 'Sourdough Basics',
-      author: 'Rita Montoya',
-      category: 'cooking',
-      isbn: '978-1440346814',
-      publishedYear: 2019,
-      coverImage: 'https://placehold.co/150?text=Sourdough+Basics',
-      description:
-        'Step-by-step guide to making and maintaining sourdough starters.',
-    },
-    {
-      id: '49',
-      title: 'The Night Mechanic',
-      author: 'Darren Cole',
-      category: 'mystery',
-      isbn: '978-0525568149',
-      publishedYear: 2013,
-      coverImage: 'https://placehold.co/150?text=The+Night+Mechanic',
-      description: 'A noir mystery involving a mechanic and a missing person.',
-    },
-    {
-      id: '50',
-      title: 'Financial Modeling with Excel',
-      author: 'Yvonne Zhang',
-      category: 'business',
-      isbn: '978-1119650204',
-      publishedYear: 2018,
-      coverImage: 'https://placehold.co/150?text=Financial+Modeling+with+Excel',
-      description: 'Build financial models and projections using spreadsheets.',
-    },
-    {
-      id: '51',
-      title: "The Voyager's Log",
-      author: 'Ethan Hart',
-      category: 'science-fiction',
-      isbn: '978-1472132190',
-      publishedYear: 2016,
-      coverImage: 'https://placehold.co/150?text=The+Voyagers+Log',
-      description: 'Interstellar exploration and the human cost of discovery.',
-    },
-    {
-      id: '52',
-      title: 'Handmade Ceramics',
-      author: 'Olga Petrov',
-      category: 'art',
-      isbn: '978-1607109026',
-      publishedYear: 2015,
-      coverImage: 'https://placehold.co/150?text=Handmade+Ceramics',
-      description: 'Techniques, glazing tips, and projects for pottery lovers.',
-    },
-    {
-      id: '53',
-      title: 'The Glass Bridge',
-      author: 'Marion Cale',
-      category: 'fiction',
-      isbn: '978-1984822185',
-      publishedYear: 2020,
-      coverImage: 'https://placehold.co/150?text=The+Glass+Bridge',
-      description: 'A novel of love and daring architectural feats.',
-    },
-    {
-      id: '54',
-      title: 'C# in Depth',
-      author: 'Aleksandra Novak',
-      category: 'programming',
-      isbn: '978-1617294532',
-      publishedYear: 2019,
-      coverImage: 'https://placehold.co/150?text=C%23+in+Depth',
-      description: 'Advanced C# topics and modern language features.',
-    },
-    {
-      id: '55',
-      title: 'The Quiet Revolution',
-      author: 'Thomas Keegan',
-      category: 'history',
-      isbn: '978-0674247327',
-      publishedYear: 2011,
-      coverImage: 'https://placehold.co/150?text=The+Quiet+Revolution',
-      description: 'How subtle cultural shifts reshape societies over time.',
-    },
-    {
-      id: '56',
-      title: 'Puppetry for Kids',
-      author: 'Janelle Ortiz',
-      category: 'children',
-      isbn: '978-1481445125',
-      publishedYear: 2017,
-      coverImage: 'https://placehold.co/150?text=Puppetry+for+Kids',
-      description: "Fun crafts and scripts to spark children's imagination.",
-    },
-    {
-      id: '57',
-      title: 'Blockchain Essentials',
-      author: 'Hiro Tanaka',
-      category: 'business',
-      isbn: '978-0262539631',
-      publishedYear: 2020,
-      coverImage: 'https://placehold.co/150?text=Blockchain+Essentials',
-      description:
-        'Understanding distributed ledgers and use cases beyond crypto.',
-    },
-    {
-      id: '58',
-      title: 'The Paper Boat',
-      author: 'Isabel Laurent',
-      category: 'fiction',
-      isbn: '978-0143127741',
-      publishedYear: 2014,
-      coverImage: 'https://placehold.co/150?text=The+Paper+Boat',
-      description: 'A touching story of childhood friendship and resilience.',
-    },
-    {
-      id: '59',
-      title: 'Advanced CSS Layouts',
-      author: 'Noah Stern',
-      category: 'design',
-      isbn: '978-1491985571',
-      publishedYear: 2019,
-      coverImage: 'https://placehold.co/150?text=Advanced+CSS+Layouts',
-      description:
-        'Modern layout techniques with Flexbox, Grid, and responsive design.',
-    },
-    {
-      id: '60',
-      title: 'Birds of the Northern Region',
-      author: 'Camille Rossi',
-      category: 'science',
-      isbn: '978-0691172357',
-      publishedYear: 2012,
-      coverImage: 'https://placehold.co/150?text=Birds+of+Northern+Region',
-      description: 'Field guide to identifying local birds and their habitats.',
-    },
-    {
-      id: '61',
-      title: "The Alchemist's Daughter",
-      author: 'Corinne Vale',
-      category: 'fantasy',
-      isbn: '978-0765377067',
-      publishedYear: 2015,
-      coverImage: 'https://placehold.co/150?text=Alchemists+Daughter',
-      description: 'Magic, family legacy, and a journey to master old arts.',
-    },
-    {
-      id: '62',
-      title: 'Practical Networking',
-      author: 'Gordon Mills',
-      category: 'programming',
-      isbn: '978-0136097046',
-      publishedYear: 2016,
-      coverImage: 'https://placehold.co/150?text=Practical+Networking',
-      description: 'Networking fundamentals and hands-on configuration tips.',
-    },
-    {
-      id: '63',
-      title: 'Letters from Istanbul',
-      author: 'Leyla Erdem',
-      category: 'travel',
-      isbn: '978-0812985812',
-      publishedYear: 2013,
-      coverImage: 'https://placehold.co/150?text=Letters+from+Istanbul',
-      description:
-        'Personal essays and travel notes from a bustling metropolis.',
-    },
-    {
-      id: '64',
-      title: "The Clockmaker's Secret",
-      author: 'Julian Price',
-      category: 'mystery',
-      isbn: '978-0062567855',
-      publishedYear: 2011,
-      coverImage: 'https://placehold.co/150?text=Clockmakers+Secret',
-      description: 'A historical mystery revolving around a master clockmaker.',
-    },
-    {
-      id: '65',
-      title: 'Mindful Eating',
-      author: 'Dr. Sonia Rivera',
-      category: 'health',
-      isbn: '978-0143124994',
-      publishedYear: 2017,
-      coverImage: 'https://placehold.co/150?text=Mindful+Eating',
-      description: 'Techniques to build healthier relationships with food.',
-    },
-    {
-      id: '66',
-      title: 'The Wanderer',
-      author: 'K. J. Monroe',
-      category: 'fiction',
-      isbn: '978-0451496169',
-      publishedYear: 2019,
-      coverImage: 'https://placehold.co/150?text=The+Wanderer',
-      description: 'A journey through landscapes and personal transformation.',
-    },
-    {
-      id: '67',
-      title: 'Photography: Light & Lens',
-      author: 'Anton Belyakov',
-      category: 'art',
-      isbn: '978-1607740436',
-      publishedYear: 2014,
-      coverImage: 'https://placehold.co/150?text=Photography+Light+%26+Lens',
-      description: 'Fundamentals of exposure, composition, and storytelling.',
-    },
-    {
-      id: '68',
-      title: 'The Hidden Code',
-      author: 'Lydia Freeman',
-      category: 'thriller',
-      isbn: '978-1250123456',
-      publishedYear: 2021,
-      coverImage: 'https://placehold.co/150?text=The+Hidden+Code',
-      description: 'A cyber-thriller about encrypted secrets and conspiracies.',
-    },
-    {
-      id: '69',
-      title: 'The Little Blackbird',
-      author: 'Manuel Duarte',
-      category: 'children',
-      isbn: '978-1536201298',
-      publishedYear: 2016,
-      coverImage: 'https://placehold.co/150?text=The+Little+Blackbird',
-      description: 'A playful picture book about friendship and courage.',
-    },
-    {
-      id: '70',
-      title: 'Functional Programming with Elm',
-      author: 'Svetlana Orlov',
-      category: 'programming',
-      isbn: '978-0134987043',
-      publishedYear: 2018,
-      coverImage:
-        'https://placehold.co/150?text=Functional+Programming+with+Elm',
-      description: 'Functional programming concepts applied in Elm.',
-    },
-    {
-      id: '71',
-      title: 'The Amber Compass',
-      author: 'R. F. Delacroix',
-      category: 'fantasy',
-      isbn: '978-1250294030',
-      publishedYear: 2018,
-      coverImage: 'https://placehold.co/150?text=The+Amber+Compass',
-      description: 'A quest tale filled with maps, magic, and rivalry.',
-    },
-    {
-      id: '72',
-      title: 'Sustainable Home Projects',
-      author: 'Eve Lambert',
-      category: 'home',
-      isbn: '978-1607741020',
-      publishedYear: 2015,
-      coverImage: 'https://placehold.co/150?text=Sustainable+Home+Projects',
-      description: 'DIY projects to reduce waste and improve home efficiency.',
-    },
-    {
-      id: '73',
-      title: 'The Night Watchwoman',
-      author: 'Isla Goodwin',
-      category: 'fiction',
-      isbn: '978-0525570095',
-      publishedYear: 2012,
-      coverImage: 'https://placehold.co/150?text=The+Night+Watchwoman',
-      description: 'A story of resilience and midnight reckonings.',
-    },
-    {
-      id: '74',
-      title: 'Effective Remote Teams',
-      author: 'Parker Dunn',
-      category: 'business',
-      isbn: '978-1119613982',
-      publishedYear: 2020,
-      coverImage: 'https://placehold.co/150?text=Effective+Remote+Teams',
-      description:
-        'Best practices for collaboration and productivity at distance.',
-    },
-    {
-      id: '75',
-      title: 'The Inventive Chef',
-      author: 'Amara Singh',
-      category: 'cooking',
-      isbn: '978-0525568706',
-      publishedYear: 2019,
-      coverImage: 'https://placehold.co/150?text=The+Inventive+Chef',
-      description: 'Creative recipes blending global flavors and techniques.',
-    },
-    {
-      id: '76',
-      title: 'Meditations on Time',
-      author: 'Lucien March',
-      category: 'philosophy',
-      isbn: '978-0801016452',
-      publishedYear: 2008,
-      coverImage: 'https://placehold.co/150?text=Meditations+on+Time',
-      description: 'Essays exploring the nature and perception of time.',
-    },
-    {
-      id: '77',
-      title: "The River's Daughter",
-      author: 'Tessa Quinn',
-      category: 'fiction',
-      isbn: '978-1524763169',
-      publishedYear: 2016,
-      coverImage: 'https://placehold.co/150?text=The+Rivers+Daughter',
-      description: 'A lyrical novel about belonging and the pull of home.',
-    },
-    {
-      id: '78',
-      title: 'Bootstrap to React',
-      author: 'Evan Cho',
-      category: 'programming',
-      isbn: '978-1492074215',
-      publishedYear: 2019,
-      coverImage: 'https://placehold.co/150?text=Bootstrap+to+React',
-      description:
-        'Transitioning UI skills from Bootstrap to modern React stacks.',
-    },
-    {
-      id: '79',
-      title: 'Sketchbook: Urban Scenes',
-      author: 'Marin Flores',
-      category: 'art',
-      isbn: '978-1607747138',
-      publishedYear: 2017,
-      coverImage: 'https://placehold.co/150?text=Sketchbook+Urban+Scenes',
-      description:
-        'Urban sketching prompts and techniques for on-the-go artists.',
-    },
-    {
-      id: '80',
-      title: "The Gardener's Almanac",
-      author: "Patricia O'Neal",
-      category: 'home',
-      isbn: '978-1603096469',
-      publishedYear: 2013,
-      coverImage: 'https://placehold.co/150?text=Gardeners+Almanac',
-      description: 'Seasonal gardening tips for temperate climates.',
-    },
-    {
-      id: '81',
-      title: 'Secrets of the Atlas',
-      author: 'Noelle Grant',
-      category: 'adventure',
-      isbn: '978-1250784311',
-      publishedYear: 2020,
-      coverImage: 'https://placehold.co/150?text=Secrets+of+the+Atlas',
-      description: 'An adventure novel chasing hidden maps and lost cities.',
-    },
-    {
-      id: '82',
-      title: 'Learning GraphQL',
-      author: 'Hassan Ali',
-      category: 'programming',
-      isbn: '978-1492030716',
-      publishedYear: 2019,
-      coverImage: 'https://placehold.co/150?text=Learning+GraphQL',
-      description: 'Core concepts and building APIs with GraphQL.',
-    },
-    {
-      id: '83',
-      title: 'Quiet Places',
-      author: 'Rosa Kim',
-      category: 'travel',
-      isbn: '978-0525563718',
-      publishedYear: 2015,
-      coverImage: 'https://placehold.co/150?text=Quiet+Places',
-      description: 'Hidden retreats and destinations for contemplation.',
-    },
-    {
-      id: '84',
-      title: 'The Clockwork Garden',
-      author: 'Eldon Pierce',
-      category: 'fantasy',
-      isbn: '978-1250198721',
-      publishedYear: 2014,
-      coverImage: 'https://placehold.co/150?text=Clockwork+Garden',
-      description: 'A whimsical fantasy where nature and machinery entwine.',
-    },
-    {
-      id: '85',
-      title: 'Practical Ethics',
-      author: 'Dr. Helen Myer',
-      category: 'philosophy',
-      isbn: '978-0199530736',
-      publishedYear: 2010,
-      coverImage: 'https://placehold.co/150?text=Practical+Ethics',
-      description: 'Accessible treatment of moral dilemmas in modern life.',
-    },
-    {
-      id: '86',
-      title: 'The Paper Trail',
-      author: 'Violet Archer',
-      category: 'mystery',
-      isbn: '978-0525553160',
-      publishedYear: 2011,
-      coverImage: 'https://placehold.co/150?text=The+Paper+Trail',
-      description: 'A hush-hush investigation into archival secrets.',
-    },
-    {
-      id: '87',
-      title: 'Smart Homes: A Primer',
-      author: 'Diego Morales',
-      category: 'technology',
-      isbn: '978-0135735565',
-      publishedYear: 2019,
-      coverImage: 'https://placehold.co/150?text=Smart+Homes+Primer',
-      description: 'Overview of home automation technologies and security.',
-    },
-    {
-      id: '88',
-      title: 'The Old Violin',
-      author: 'Camden Holt',
-      category: 'fiction',
-      isbn: '978-0812981609',
-      publishedYear: 2012,
-      coverImage: 'https://placehold.co/150?text=The+Old+Violin',
-      description: 'A story about music, memory, and a cherished instrument.',
-    },
-    {
-      id: '89',
-      title: 'Machine Learning Ops',
-      author: 'Iris Becker',
-      category: 'programming',
-      isbn: '978-1492076677',
-      publishedYear: 2022,
-      coverImage: 'https://placehold.co/150?text=Machine+Learning+Ops',
-      description:
-        'Operationalizing ML models: deployment, monitoring, and governance.',
-    },
-    {
-      id: '90',
-      title: 'Tales from the Coast',
-      author: 'R. A. Winters',
-      category: 'short-stories',
-      isbn: '978-1476788599',
-      publishedYear: 2014,
-      coverImage: 'https://placehold.co/150?text=Tales+from+the+Coast',
-      description: 'A collection of short stories set by the sea.',
-    },
-    {
-      id: '91',
-      title: 'Color Theory Made Simple',
-      author: 'Bea Navarro',
-      category: 'art',
-      isbn: '978-1607745677',
-      publishedYear: 2016,
-      coverImage: 'https://placehold.co/150?text=Color+Theory+Made+Simple',
-      description: 'Understanding and applying color relationships to design.',
-    },
-    {
-      id: '92',
-      title: 'The Copper Coin',
-      author: 'N. J. Carter',
-      category: 'historical-fiction',
-      isbn: '978-1250157034',
-      publishedYear: 2018,
-      coverImage: 'https://placehold.co/150?text=The+Copper+Coin',
-      description:
-        'A historical saga tied to a mysterious coin and a family secret.',
-    },
-    {
-      id: '93',
-      title: 'Yoga for Every Body',
-      author: 'Anya Desai',
-      category: 'health',
-      isbn: '978-1594869772',
-      publishedYear: 2015,
-      coverImage: 'https://placehold.co/150?text=Yoga+for+Every+Body',
-      description: 'Inclusive yoga practices and adaptations for all levels.',
-    },
-    {
-      id: '94',
-      title: 'The Secret Library',
-      author: 'Ellis Murray',
-      category: 'fiction',
-      isbn: '978-0399586778',
-      publishedYear: 2013,
-      coverImage: 'https://placehold.co/150?text=The+Secret+Library',
-      description:
-        'A literary mystery set inside a hidden neighborhood library.',
-    },
-    {
-      id: '95',
-      title: 'Type Systems Unpacked',
-      author: 'Monica Reyes',
-      category: 'programming',
-      isbn: '978-0262538337',
-      publishedYear: 2020,
-      coverImage: 'https://placehold.co/150?text=Type+Systems+Unpacked',
-      description:
-        'Practical guide to static typing and type inference across languages.',
-    },
-    {
-      id: '96',
-      title: "Crafting Children's Books",
-      author: 'Poppy James',
-      category: 'design',
-      isbn: '978-1612438345',
-      publishedYear: 2017,
-      coverImage: 'https://placehold.co/150?text=Crafting+Childrens+Books',
-      description:
-        "How to write, illustrate, and publish engaging children's stories.",
-    },
-    {
-      id: '97',
-      title: "The Painter's Return",
-      author: 'Gina Russo',
-      category: 'fiction',
-      isbn: '978-1250147287',
-      publishedYear: 2011,
-      coverImage: 'https://placehold.co/150?text=The+Painters+Return',
-      description: 'A novel about art, loss, and creative renewal.',
-    },
-    {
-      id: '98',
-      title: 'Climate Change Basics',
-      author: 'Dr. Omar Hassan',
-      category: 'science',
-      isbn: '978-0262033842',
-      publishedYear: 2019,
-      coverImage: 'https://placehold.co/150?text=Climate+Change+Basics',
-      description:
-        'Clear explanations of climate science and mitigation strategies.',
-    },
-    {
-      id: '99',
-      title: 'The Velvet Thief',
-      author: 'Cordelia Price',
-      category: 'thriller',
-      isbn: '978-1984829313',
-      publishedYear: 2021,
-      coverImage: 'https://placehold.co/150?text=The+Velvet+Thief',
-      description: 'A high-stakes heist thriller with unexpected alliances.',
-    },
-    {
-      id: '100',
-      title: 'Homebrewing Handbook',
-      author: 'Nate Gibson',
-      category: 'cooking',
-      isbn: '978-1612434682',
-      publishedYear: 2016,
-      coverImage: 'https://placehold.co/150?text=Homebrewing+Handbook',
-      description:
-        'Beginner to intermediate homebrewing techniques and recipes.',
-    },
-    {
-      id: '101',
-      title: 'The Sculpture Studio',
-      author: 'Marta Beltran',
-      category: 'art',
-      isbn: '978-1607742799',
-      publishedYear: 2014,
-      coverImage: 'https://placehold.co/150?text=The+Sculpture+Studio',
-      description: 'Materials, tools, and projects for aspiring sculptors.',
-    },
-    {
-      id: '102',
-      title: 'Roads Less Traveled',
-      author: 'Henry Low',
-      category: 'travel',
-      isbn: '978-0812984587',
-      publishedYear: 2012,
-      coverImage: 'https://placehold.co/150?text=Roads+Less+Traveled',
-      description: 'Off-the-beaten-path travel stories and practical tips.',
-    },
-    {
-      id: '103',
-      title: 'The Iron Orchard',
-      author: 'S. M. Greer',
-      category: 'historical-fiction',
-      isbn: '978-1250117241',
-      publishedYear: 2018,
-      coverImage: 'https://placehold.co/150?text=The+Iron+Orchard',
-      description: 'A multi-generational saga of labor, land, and survival.',
-    },
-    {
-      id: '104',
-      title: 'Practical Rust',
-      author: 'Andrew L. Fox',
-      category: 'programming',
-      isbn: '978-1718500448',
-      publishedYear: 2021,
-      coverImage: 'https://placehold.co/150?text=Practical+Rust',
-      description: 'Rust language techniques for systems and web development.',
-    },
-  ];
+    private books: Book[] = [
+        {
+            id: '1',
+            title: 'Learning React',
+            author: 'Alex Banks, Eve Porcello',
+            category: 'programming',
+            isbn: '978-1492051725',
+            publishedYear: 2020,
+            coverImage: 'https://placehold.co/150?text=Learning+React',
+            description:
+                'A hands-on introduction to React and modern JavaScript.',
+        },
+        {
+            id: '2',
+            title: '1984',
+            author: 'George Orwell',
+            category: 'fiction',
+            isbn: '978-0451524935',
+            publishedYear: 1949,
+            coverImage: 'https://placehold.co/150?text=1984',
+            description: 'A dystopian social science fiction novel.',
+        },
+        {
+            id: '3',
+            title: 'Sapiens: A Brief History of Humankind',
+            author: 'Yuval Noah Harari',
+            category: 'history',
+            isbn: '978-0062316097',
+            publishedYear: 2011,
+            coverImage: 'https://placehold.co/150?text=Sapiens',
+            description:
+                'A survey of the history of humankind from the evolution of archaic human species.',
+        },
+        {
+            id: '4',
+            title: 'The Pragmatic Programmer',
+            author: 'David Thomas, Andrew Hunt',
+            category: 'programming',
+            isbn: '978-0135957059',
+            publishedYear: 2019,
+            coverImage: 'https://placehold.co/150?text=Pragmatic+Programmer',
+            description: 'Your journey to mastery in software development.',
+        },
+        {
+            id: '5',
+            title: 'Introduction to TypeScript',
+            author: 'Daniel Russo',
+            category: 'programming',
+            isbn: '978-1492086670',
+            publishedYear: 2021,
+            coverImage:
+                'https://placehold.co/150?text=Introduction+to+TypeScript',
+            description:
+                'Foundations and practical patterns for building scalable TypeScript apps.',
+        },
+        {
+            id: '6',
+            title: 'The Silent Garden',
+            author: 'Maya Thornton',
+            category: 'fiction',
+            isbn: '978-1982045631',
+            publishedYear: 2018,
+            coverImage: 'https://placehold.co/150?text=The+Silent+Garden',
+            description:
+                'An intimate novel about family secrets and reconciliation.',
+        },
+        {
+            id: '7',
+            title: 'Physics Essentials',
+            author: 'R. K. Mendoza',
+            category: 'science',
+            isbn: '978-0262538473',
+            publishedYear: 2015,
+            coverImage: 'https://placehold.co/150?text=Physics+Essentials',
+            description:
+                'A clear overview of classical and modern physics concepts.',
+        },
+        {
+            id: '8',
+            title: 'Modern Art: A Short Introduction',
+            author: 'Lena Fischer',
+            category: 'art',
+            isbn: '978-0674979805',
+            publishedYear: 2013,
+            coverImage: 'https://placehold.co/150?text=Modern+Art',
+            description:
+                'Survey of modern art movements and influential artists.',
+        },
+        {
+            id: '9',
+            title: 'Deep Work Habits',
+            author: 'Samuel Price',
+            category: 'self-help',
+            isbn: '978-0143139045',
+            publishedYear: 2020,
+            coverImage: 'https://placehold.co/150?text=Deep+Work+Habits',
+            description:
+                'Practical strategies to increase focus and productive work time.',
+        },
+        {
+            id: '10',
+            title: 'Gardens of Europe',
+            author: 'Adele Korhonen',
+            category: 'travel',
+            isbn: '978-0307958495',
+            publishedYear: 2016,
+            coverImage: 'https://placehold.co/150?text=Gardens+of+Europe',
+            description:
+                "A photographic tour of Europe's most beautiful gardens.",
+        },
+        {
+            id: '11',
+            title: 'SQL for Everyone',
+            author: 'Priya Menon',
+            category: 'programming',
+            isbn: '978-1593278856',
+            publishedYear: 2019,
+            coverImage: 'https://placehold.co/150?text=SQL+for+Everyone',
+            description:
+                'Beginner-friendly SQL with real-world query examples.',
+        },
+        {
+            id: '12',
+            title: 'The Lighthouse Keeper',
+            author: 'Jonas Reed',
+            category: 'fiction',
+            isbn: '978-0525567326',
+            publishedYear: 2022,
+            coverImage: 'https://placehold.co/150?text=The+Lighthouse+Keeper',
+            description: 'A coastal mystery about loss, memory, and hope.',
+        },
+        {
+            id: '13',
+            title: 'World War II: A Concise History',
+            author: 'Eleanor Shaw',
+            category: 'history',
+            isbn: '978-0143119420',
+            publishedYear: 2010,
+            coverImage: 'https://placehold.co/150?text=WWII+Concise+History',
+            description:
+                'A compact overview of the major events and consequences.',
+        },
+        {
+            id: '14',
+            title: 'Cooking for Busy People',
+            author: 'Marco Silva',
+            category: 'cooking',
+            isbn: '978-0399589073',
+            publishedYear: 2017,
+            coverImage: 'https://placehold.co/150?text=Cooking+for+Busy+People',
+            description: 'Fast, healthy recipes for weeknight meals.',
+        },
+        {
+            id: '15',
+            title: 'The Ecology Handbook',
+            author: 'Greta Olsson',
+            category: 'science',
+            isbn: '978-0262039243',
+            publishedYear: 2014,
+            coverImage: 'https://placehold.co/150?text=Ecology+Handbook',
+            description: 'Key principles of ecology and environmental science.',
+        },
+        {
+            id: '16',
+            title: 'Mastering Algorithms',
+            author: 'Ibrahim Khan',
+            category: 'programming',
+            isbn: '978-0134757599',
+            publishedYear: 2020,
+            coverImage: 'https://placehold.co/150?text=Mastering+Algorithms',
+            description:
+                'Algorithms explained with code examples and complexity analysis.',
+        },
+        {
+            id: '17',
+            title: 'Midnight on the Avenue',
+            author: 'Harper Lane',
+            category: 'mystery',
+            isbn: '978-0345546052',
+            publishedYear: 2011,
+            coverImage: 'https://placehold.co/150?text=Midnight+on+the+Avenue',
+            description: 'A detective novel with twists in an urban setting.',
+        },
+        {
+            id: '18',
+            title: 'Startup Finance 101',
+            author: 'Ravi Patel',
+            category: 'business',
+            isbn: '978-1119541061',
+            publishedYear: 2021,
+            coverImage: 'https://placehold.co/150?text=Startup+Finance+101',
+            description:
+                'Essential financial principles for early-stage startups.',
+        },
+        {
+            id: '19',
+            title: 'The Poetry of Rain',
+            author: 'Clara Mendes',
+            category: 'poetry',
+            isbn: '978-1571312923',
+            publishedYear: 2009,
+            coverImage: 'https://placehold.co/150?text=Poetry+of+Rain',
+            description: 'A collection of nature-inspired poems.',
+        },
+        {
+            id: '20',
+            title: "Children's First Atlas",
+            author: 'Olivia Park',
+            category: 'children',
+            isbn: '978-0525555379',
+            publishedYear: 2018,
+            coverImage: 'https://placehold.co/150?text=Childrens+First+Atlas',
+            description: 'Colorful maps and facts for young explorers.',
+        },
+        {
+            id: '21',
+            title: "The UX Designer's Notebook",
+            author: 'Benita Cruz',
+            category: 'design',
+            isbn: '978-1491991755',
+            publishedYear: 2016,
+            coverImage: 'https://placehold.co/150?text=UX+Designers+Notebook',
+            description:
+                'Practical tips and exercises for user-centered design.',
+        },
+        {
+            id: '22',
+            title: 'Quantum Computing Explained',
+            author: 'Xiao Li',
+            category: 'science',
+            isbn: '978-0262039250',
+            publishedYear: 2022,
+            coverImage:
+                'https://placehold.co/150?text=Quantum+Computing+Explained',
+            description:
+                'An approachable introduction to quantum algorithms and hardware.',
+        },
+        {
+            id: '23',
+            title: 'The Last Orchard',
+            author: 'Fiona Doyle',
+            category: 'fiction',
+            isbn: '978-1501177202',
+            publishedYear: 2013,
+            coverImage: 'https://placehold.co/150?text=The+Last+Orchard',
+            description:
+                'A lyrical tale about stewardship, inheritance, and change.',
+        },
+        {
+            id: '24',
+            title: 'Mindful Leadership',
+            author: 'Kenji Watanabe',
+            category: 'business',
+            isbn: '978-1594633669',
+            publishedYear: 2019,
+            coverImage: 'https://placehold.co/150?text=Mindful+Leadership',
+            description:
+                'How mindfulness practices improve leadership and team culture.',
+        },
+        {
+            id: '25',
+            title: 'Historic Cities of the World',
+            author: 'Natalie Brooks',
+            category: 'history',
+            isbn: '978-0307269997',
+            publishedYear: 2012,
+            coverImage: 'https://placehold.co/150?text=Historic+Cities',
+            description: 'Profiles of cities that shaped world history.',
+        },
+        {
+            id: '26',
+            title: 'React Patterns',
+            author: 'Oliver Grant',
+            category: 'programming',
+            isbn: '978-1718502565',
+            publishedYear: 2021,
+            coverImage: 'https://placehold.co/150?text=React+Patterns',
+            description:
+                'Common design patterns and anti-patterns in React development.',
+        },
+        {
+            id: '27',
+            title: "The Mapmaker's Daughter",
+            author: 'Renee Alvarez',
+            category: 'fiction',
+            isbn: '978-0804176130',
+            publishedYear: 2014,
+            coverImage: 'https://placehold.co/150?text=The+Mapmakers+Daughter',
+            description:
+                'A historical novel about exploration and family ties.',
+        },
+        {
+            id: '28',
+            title: 'Data Visualization Handbook',
+            author: 'Marcus Blum',
+            category: 'design',
+            isbn: '978-1492078633',
+            publishedYear: 2018,
+            coverImage:
+                'https://placehold.co/150?text=Data+Visualization+Handbook',
+            description: 'Principles and tools for telling stories with data.',
+        },
+        {
+            id: '29',
+            title: 'Meditations for Busy Minds',
+            author: 'Aisha Rahman',
+            category: 'self-help',
+            isbn: '978-1982101416',
+            publishedYear: 2020,
+            coverImage:
+                'https://placehold.co/150?text=Meditations+for+Busy+Minds',
+            description: 'Short meditation exercises for daily calm.',
+        },
+        {
+            id: '30',
+            title: "The Inventor's Journey",
+            author: 'Peter Lang',
+            category: 'biography',
+            isbn: '978-0525538077',
+            publishedYear: 2017,
+            coverImage: 'https://placehold.co/150?text=The+Inventors+Journey',
+            description: 'A biography following the life of a modern inventor.',
+        },
+        {
+            id: '31',
+            title: 'Algorithms in Practice',
+            author: 'Nora Abdel',
+            category: 'programming',
+            isbn: '978-0134093413',
+            publishedYear: 2016,
+            coverImage: 'https://placehold.co/150?text=Algorithms+in+Practice',
+            description: 'Applied algorithms with performance considerations.',
+        },
+        {
+            id: '32',
+            title: 'The Blue Sparrow',
+            author: 'Colin Marks',
+            category: 'fiction',
+            isbn: '978-1250074278',
+            publishedYear: 2015,
+            coverImage: 'https://placehold.co/150?text=The+Blue+Sparrow',
+            description: 'A coming-of-age story set in a small coastal town.',
+        },
+        {
+            id: '33',
+            title: 'Nutrition Simplified',
+            author: 'Dr. Lena Ho',
+            category: 'health',
+            isbn: '978-1592339720',
+            publishedYear: 2018,
+            coverImage: 'https://placehold.co/150?text=Nutrition+Simplified',
+            description:
+                'Evidence-based advice for balanced eating and wellness.',
+        },
+        {
+            id: '34',
+            title: 'The Algorithmic Trader',
+            author: 'Marcus D. Voss',
+            category: 'business',
+            isbn: '978-1119487053',
+            publishedYear: 2019,
+            coverImage: 'https://placehold.co/150?text=Algorithmic+Trader',
+            description:
+                'Strategies and technologies for automated trading systems.',
+        },
+        {
+            id: '35',
+            title: 'Sketching for Beginners',
+            author: 'Yumi Tanaka',
+            category: 'art',
+            isbn: '978-1598637458',
+            publishedYear: 2011,
+            coverImage: 'https://placehold.co/150?text=Sketching+for+Beginners',
+            description: 'Basic techniques to start sketching confidently.',
+        },
+        {
+            id: '36',
+            title: 'The Last Lighthouse',
+            author: 'Gareth Moore',
+            category: 'mystery',
+            isbn: '978-0525559476',
+            publishedYear: 2020,
+            coverImage: 'https://placehold.co/150?text=The+Last+Lighthouse',
+            description: 'A thriller centered on a remote coastal beacon.',
+        },
+        {
+            id: '37',
+            title: 'Practical Kubernetes',
+            author: 'Sofia Ramez',
+            category: 'programming',
+            isbn: '978-1492051916',
+            publishedYear: 2021,
+            coverImage: 'https://placehold.co/150?text=Practical+Kubernetes',
+            description:
+                'Hands-on guide to deploying and managing containerized apps.',
+        },
+        {
+            id: '38',
+            title: 'Echoes of Winter',
+            author: "Niall O'Connor",
+            category: 'fiction',
+            isbn: '978-0452296610',
+            publishedYear: 2012,
+            coverImage: 'https://placehold.co/150?text=Echoes+of+Winter',
+            description: 'Interwoven stories of love and loss across decades.',
+        },
+        {
+            id: '39',
+            title: 'Botany Field Guide',
+            author: 'Helena Moretti',
+            category: 'science',
+            isbn: '978-0691169111',
+            publishedYear: 2014,
+            coverImage: 'https://placehold.co/150?text=Botany+Field+Guide',
+            description: 'Identification guide for common plants and flora.',
+        },
+        {
+            id: '40',
+            title: 'The Portfolio Investor',
+            author: 'Derek Finch',
+            category: 'business',
+            isbn: '978-0738212706',
+            publishedYear: 2016,
+            coverImage: 'https://placehold.co/150?text=Portfolio+Investor',
+            description:
+                'Principles for building and managing long-term portfolios.',
+        },
+        {
+            id: '41',
+            title: 'Tiny Tales for Kids',
+            author: 'Mira Patel',
+            category: 'children',
+            isbn: '978-0062835398',
+            publishedYear: 2019,
+            coverImage: 'https://placehold.co/150?text=Tiny+Tales+for+Kids',
+            description: 'Short bedtime stories for young readers.',
+        },
+        {
+            id: '42',
+            title: 'Design Systems at Scale',
+            author: 'Oliver Creed',
+            category: 'design',
+            isbn: '978-1492046899',
+            publishedYear: 2020,
+            coverImage: 'https://placehold.co/150?text=Design+Systems+at+Scale',
+            description: 'How to create and maintain scalable design systems.',
+        },
+        {
+            id: '43',
+            title: 'The Forgotten Monastery',
+            author: 'S. R. Elgar',
+            category: 'history',
+            isbn: '978-0307743657',
+            publishedYear: 2010,
+            coverImage: 'https://placehold.co/150?text=Forgotten+Monastery',
+            description: "Exploration of a remote monastery's medieval past.",
+        },
+        {
+            id: '44',
+            title: 'Intro to Machine Learning',
+            author: 'Hannah Kim',
+            category: 'programming',
+            isbn: '978-0262035617',
+            publishedYear: 2018,
+            coverImage:
+                'https://placehold.co/150?text=Intro+to+Machine+Learning',
+            description: 'Key ML concepts, algorithms, and practical examples.',
+        },
+        {
+            id: '45',
+            title: 'The Rosewood Key',
+            author: 'Gideon Blake',
+            category: 'fantasy',
+            isbn: '978-1250190979',
+            publishedYear: 2017,
+            coverImage: 'https://placehold.co/150?text=The+Rosewood+Key',
+            description:
+                'A fantasy adventure about a lost artifact and destiny.',
+        },
+        {
+            id: '46',
+            title: 'Urban Bike Guide',
+            author: 'Sana Iqbal',
+            category: 'travel',
+            isbn: '978-1612438765',
+            publishedYear: 2021,
+            coverImage: 'https://placehold.co/150?text=Urban+Bike+Guide',
+            description: 'Routes, safety tips, and cycling culture in cities.',
+        },
+        {
+            id: '47',
+            title: 'The Ethics of AI',
+            author: 'Dr. Felix Romero',
+            category: 'philosophy',
+            isbn: '978-1108465076',
+            publishedYear: 2022,
+            coverImage: 'https://placehold.co/150?text=Ethics+of+AI',
+            description: 'A deep look at moral questions raised by AI systems.',
+        },
+        {
+            id: '48',
+            title: 'Sourdough Basics',
+            author: 'Rita Montoya',
+            category: 'cooking',
+            isbn: '978-1440346814',
+            publishedYear: 2019,
+            coverImage: 'https://placehold.co/150?text=Sourdough+Basics',
+            description:
+                'Step-by-step guide to making and maintaining sourdough starters.',
+        },
+        {
+            id: '49',
+            title: 'The Night Mechanic',
+            author: 'Darren Cole',
+            category: 'mystery',
+            isbn: '978-0525568149',
+            publishedYear: 2013,
+            coverImage: 'https://placehold.co/150?text=The+Night+Mechanic',
+            description:
+                'A noir mystery involving a mechanic and a missing person.',
+        },
+        {
+            id: '50',
+            title: 'Financial Modeling with Excel',
+            author: 'Yvonne Zhang',
+            category: 'business',
+            isbn: '978-1119650204',
+            publishedYear: 2018,
+            coverImage:
+                'https://placehold.co/150?text=Financial+Modeling+with+Excel',
+            description:
+                'Build financial models and projections using spreadsheets.',
+        },
+        {
+            id: '51',
+            title: "The Voyager's Log",
+            author: 'Ethan Hart',
+            category: 'science-fiction',
+            isbn: '978-1472132190',
+            publishedYear: 2016,
+            coverImage: 'https://placehold.co/150?text=The+Voyagers+Log',
+            description:
+                'Interstellar exploration and the human cost of discovery.',
+        },
+        {
+            id: '52',
+            title: 'Handmade Ceramics',
+            author: 'Olga Petrov',
+            category: 'art',
+            isbn: '978-1607109026',
+            publishedYear: 2015,
+            coverImage: 'https://placehold.co/150?text=Handmade+Ceramics',
+            description:
+                'Techniques, glazing tips, and projects for pottery lovers.',
+        },
+        {
+            id: '53',
+            title: 'The Glass Bridge',
+            author: 'Marion Cale',
+            category: 'fiction',
+            isbn: '978-1984822185',
+            publishedYear: 2020,
+            coverImage: 'https://placehold.co/150?text=The+Glass+Bridge',
+            description: 'A novel of love and daring architectural feats.',
+        },
+        {
+            id: '54',
+            title: 'C# in Depth',
+            author: 'Aleksandra Novak',
+            category: 'programming',
+            isbn: '978-1617294532',
+            publishedYear: 2019,
+            coverImage: 'https://placehold.co/150?text=C%23+in+Depth',
+            description: 'Advanced C# topics and modern language features.',
+        },
+        {
+            id: '55',
+            title: 'The Quiet Revolution',
+            author: 'Thomas Keegan',
+            category: 'history',
+            isbn: '978-0674247327',
+            publishedYear: 2011,
+            coverImage: 'https://placehold.co/150?text=The+Quiet+Revolution',
+            description:
+                'How subtle cultural shifts reshape societies over time.',
+        },
+        {
+            id: '56',
+            title: 'Puppetry for Kids',
+            author: 'Janelle Ortiz',
+            category: 'children',
+            isbn: '978-1481445125',
+            publishedYear: 2017,
+            coverImage: 'https://placehold.co/150?text=Puppetry+for+Kids',
+            description:
+                "Fun crafts and scripts to spark children's imagination.",
+        },
+        {
+            id: '57',
+            title: 'Blockchain Essentials',
+            author: 'Hiro Tanaka',
+            category: 'business',
+            isbn: '978-0262539631',
+            publishedYear: 2020,
+            coverImage: 'https://placehold.co/150?text=Blockchain+Essentials',
+            description:
+                'Understanding distributed ledgers and use cases beyond crypto.',
+        },
+        {
+            id: '58',
+            title: 'The Paper Boat',
+            author: 'Isabel Laurent',
+            category: 'fiction',
+            isbn: '978-0143127741',
+            publishedYear: 2014,
+            coverImage: 'https://placehold.co/150?text=The+Paper+Boat',
+            description:
+                'A touching story of childhood friendship and resilience.',
+        },
+        {
+            id: '59',
+            title: 'Advanced CSS Layouts',
+            author: 'Noah Stern',
+            category: 'design',
+            isbn: '978-1491985571',
+            publishedYear: 2019,
+            coverImage: 'https://placehold.co/150?text=Advanced+CSS+Layouts',
+            description:
+                'Modern layout techniques with Flexbox, Grid, and responsive design.',
+        },
+        {
+            id: '60',
+            title: 'Birds of the Northern Region',
+            author: 'Camille Rossi',
+            category: 'science',
+            isbn: '978-0691172357',
+            publishedYear: 2012,
+            coverImage:
+                'https://placehold.co/150?text=Birds+of+Northern+Region',
+            description:
+                'Field guide to identifying local birds and their habitats.',
+        },
+        {
+            id: '61',
+            title: "The Alchemist's Daughter",
+            author: 'Corinne Vale',
+            category: 'fantasy',
+            isbn: '978-0765377067',
+            publishedYear: 2015,
+            coverImage: 'https://placehold.co/150?text=Alchemists+Daughter',
+            description:
+                'Magic, family legacy, and a journey to master old arts.',
+        },
+        {
+            id: '62',
+            title: 'Practical Networking',
+            author: 'Gordon Mills',
+            category: 'programming',
+            isbn: '978-0136097046',
+            publishedYear: 2016,
+            coverImage: 'https://placehold.co/150?text=Practical+Networking',
+            description:
+                'Networking fundamentals and hands-on configuration tips.',
+        },
+        {
+            id: '63',
+            title: 'Letters from Istanbul',
+            author: 'Leyla Erdem',
+            category: 'travel',
+            isbn: '978-0812985812',
+            publishedYear: 2013,
+            coverImage: 'https://placehold.co/150?text=Letters+from+Istanbul',
+            description:
+                'Personal essays and travel notes from a bustling metropolis.',
+        },
+        {
+            id: '64',
+            title: "The Clockmaker's Secret",
+            author: 'Julian Price',
+            category: 'mystery',
+            isbn: '978-0062567855',
+            publishedYear: 2011,
+            coverImage: 'https://placehold.co/150?text=Clockmakers+Secret',
+            description:
+                'A historical mystery revolving around a master clockmaker.',
+        },
+        {
+            id: '65',
+            title: 'Mindful Eating',
+            author: 'Dr. Sonia Rivera',
+            category: 'health',
+            isbn: '978-0143124994',
+            publishedYear: 2017,
+            coverImage: 'https://placehold.co/150?text=Mindful+Eating',
+            description:
+                'Techniques to build healthier relationships with food.',
+        },
+        {
+            id: '66',
+            title: 'The Wanderer',
+            author: 'K. J. Monroe',
+            category: 'fiction',
+            isbn: '978-0451496169',
+            publishedYear: 2019,
+            coverImage: 'https://placehold.co/150?text=The+Wanderer',
+            description:
+                'A journey through landscapes and personal transformation.',
+        },
+        {
+            id: '67',
+            title: 'Photography: Light & Lens',
+            author: 'Anton Belyakov',
+            category: 'art',
+            isbn: '978-1607740436',
+            publishedYear: 2014,
+            coverImage:
+                'https://placehold.co/150?text=Photography+Light+%26+Lens',
+            description:
+                'Fundamentals of exposure, composition, and storytelling.',
+        },
+        {
+            id: '68',
+            title: 'The Hidden Code',
+            author: 'Lydia Freeman',
+            category: 'thriller',
+            isbn: '978-1250123456',
+            publishedYear: 2021,
+            coverImage: 'https://placehold.co/150?text=The+Hidden+Code',
+            description:
+                'A cyber-thriller about encrypted secrets and conspiracies.',
+        },
+        {
+            id: '69',
+            title: 'The Little Blackbird',
+            author: 'Manuel Duarte',
+            category: 'children',
+            isbn: '978-1536201298',
+            publishedYear: 2016,
+            coverImage: 'https://placehold.co/150?text=The+Little+Blackbird',
+            description: 'A playful picture book about friendship and courage.',
+        },
+        {
+            id: '70',
+            title: 'Functional Programming with Elm',
+            author: 'Svetlana Orlov',
+            category: 'programming',
+            isbn: '978-0134987043',
+            publishedYear: 2018,
+            coverImage:
+                'https://placehold.co/150?text=Functional+Programming+with+Elm',
+            description: 'Functional programming concepts applied in Elm.',
+        },
+        {
+            id: '71',
+            title: 'The Amber Compass',
+            author: 'R. F. Delacroix',
+            category: 'fantasy',
+            isbn: '978-1250294030',
+            publishedYear: 2018,
+            coverImage: 'https://placehold.co/150?text=The+Amber+Compass',
+            description: 'A quest tale filled with maps, magic, and rivalry.',
+        },
+        {
+            id: '72',
+            title: 'Sustainable Home Projects',
+            author: 'Eve Lambert',
+            category: 'home',
+            isbn: '978-1607741020',
+            publishedYear: 2015,
+            coverImage:
+                'https://placehold.co/150?text=Sustainable+Home+Projects',
+            description:
+                'DIY projects to reduce waste and improve home efficiency.',
+        },
+        {
+            id: '73',
+            title: 'The Night Watchwoman',
+            author: 'Isla Goodwin',
+            category: 'fiction',
+            isbn: '978-0525570095',
+            publishedYear: 2012,
+            coverImage: 'https://placehold.co/150?text=The+Night+Watchwoman',
+            description: 'A story of resilience and midnight reckonings.',
+        },
+        {
+            id: '74',
+            title: 'Effective Remote Teams',
+            author: 'Parker Dunn',
+            category: 'business',
+            isbn: '978-1119613982',
+            publishedYear: 2020,
+            coverImage: 'https://placehold.co/150?text=Effective+Remote+Teams',
+            description:
+                'Best practices for collaboration and productivity at distance.',
+        },
+        {
+            id: '75',
+            title: 'The Inventive Chef',
+            author: 'Amara Singh',
+            category: 'cooking',
+            isbn: '978-0525568706',
+            publishedYear: 2019,
+            coverImage: 'https://placehold.co/150?text=The+Inventive+Chef',
+            description:
+                'Creative recipes blending global flavors and techniques.',
+        },
+        {
+            id: '76',
+            title: 'Meditations on Time',
+            author: 'Lucien March',
+            category: 'philosophy',
+            isbn: '978-0801016452',
+            publishedYear: 2008,
+            coverImage: 'https://placehold.co/150?text=Meditations+on+Time',
+            description: 'Essays exploring the nature and perception of time.',
+        },
+        {
+            id: '77',
+            title: "The River's Daughter",
+            author: 'Tessa Quinn',
+            category: 'fiction',
+            isbn: '978-1524763169',
+            publishedYear: 2016,
+            coverImage: 'https://placehold.co/150?text=The+Rivers+Daughter',
+            description:
+                'A lyrical novel about belonging and the pull of home.',
+        },
+        {
+            id: '78',
+            title: 'Bootstrap to React',
+            author: 'Evan Cho',
+            category: 'programming',
+            isbn: '978-1492074215',
+            publishedYear: 2019,
+            coverImage: 'https://placehold.co/150?text=Bootstrap+to+React',
+            description:
+                'Transitioning UI skills from Bootstrap to modern React stacks.',
+        },
+        {
+            id: '79',
+            title: 'Sketchbook: Urban Scenes',
+            author: 'Marin Flores',
+            category: 'art',
+            isbn: '978-1607747138',
+            publishedYear: 2017,
+            coverImage: 'https://placehold.co/150?text=Sketchbook+Urban+Scenes',
+            description:
+                'Urban sketching prompts and techniques for on-the-go artists.',
+        },
+        {
+            id: '80',
+            title: "The Gardener's Almanac",
+            author: "Patricia O'Neal",
+            category: 'home',
+            isbn: '978-1603096469',
+            publishedYear: 2013,
+            coverImage: 'https://placehold.co/150?text=Gardeners+Almanac',
+            description: 'Seasonal gardening tips for temperate climates.',
+        },
+        {
+            id: '81',
+            title: 'Secrets of the Atlas',
+            author: 'Noelle Grant',
+            category: 'adventure',
+            isbn: '978-1250784311',
+            publishedYear: 2020,
+            coverImage: 'https://placehold.co/150?text=Secrets+of+the+Atlas',
+            description:
+                'An adventure novel chasing hidden maps and lost cities.',
+        },
+        {
+            id: '82',
+            title: 'Learning GraphQL',
+            author: 'Hassan Ali',
+            category: 'programming',
+            isbn: '978-1492030716',
+            publishedYear: 2019,
+            coverImage: 'https://placehold.co/150?text=Learning+GraphQL',
+            description: 'Core concepts and building APIs with GraphQL.',
+        },
+        {
+            id: '83',
+            title: 'Quiet Places',
+            author: 'Rosa Kim',
+            category: 'travel',
+            isbn: '978-0525563718',
+            publishedYear: 2015,
+            coverImage: 'https://placehold.co/150?text=Quiet+Places',
+            description: 'Hidden retreats and destinations for contemplation.',
+        },
+        {
+            id: '84',
+            title: 'The Clockwork Garden',
+            author: 'Eldon Pierce',
+            category: 'fantasy',
+            isbn: '978-1250198721',
+            publishedYear: 2014,
+            coverImage: 'https://placehold.co/150?text=Clockwork+Garden',
+            description:
+                'A whimsical fantasy where nature and machinery entwine.',
+        },
+        {
+            id: '85',
+            title: 'Practical Ethics',
+            author: 'Dr. Helen Myer',
+            category: 'philosophy',
+            isbn: '978-0199530736',
+            publishedYear: 2010,
+            coverImage: 'https://placehold.co/150?text=Practical+Ethics',
+            description:
+                'Accessible treatment of moral dilemmas in modern life.',
+        },
+        {
+            id: '86',
+            title: 'The Paper Trail',
+            author: 'Violet Archer',
+            category: 'mystery',
+            isbn: '978-0525553160',
+            publishedYear: 2011,
+            coverImage: 'https://placehold.co/150?text=The+Paper+Trail',
+            description: 'A hush-hush investigation into archival secrets.',
+        },
+        {
+            id: '87',
+            title: 'Smart Homes: A Primer',
+            author: 'Diego Morales',
+            category: 'technology',
+            isbn: '978-0135735565',
+            publishedYear: 2019,
+            coverImage: 'https://placehold.co/150?text=Smart+Homes+Primer',
+            description:
+                'Overview of home automation technologies and security.',
+        },
+        {
+            id: '88',
+            title: 'The Old Violin',
+            author: 'Camden Holt',
+            category: 'fiction',
+            isbn: '978-0812981609',
+            publishedYear: 2012,
+            coverImage: 'https://placehold.co/150?text=The+Old+Violin',
+            description:
+                'A story about music, memory, and a cherished instrument.',
+        },
+        {
+            id: '89',
+            title: 'Machine Learning Ops',
+            author: 'Iris Becker',
+            category: 'programming',
+            isbn: '978-1492076677',
+            publishedYear: 2022,
+            coverImage: 'https://placehold.co/150?text=Machine+Learning+Ops',
+            description:
+                'Operationalizing ML models: deployment, monitoring, and governance.',
+        },
+        {
+            id: '90',
+            title: 'Tales from the Coast',
+            author: 'R. A. Winters',
+            category: 'short-stories',
+            isbn: '978-1476788599',
+            publishedYear: 2014,
+            coverImage: 'https://placehold.co/150?text=Tales+from+the+Coast',
+            description: 'A collection of short stories set by the sea.',
+        },
+        {
+            id: '91',
+            title: 'Color Theory Made Simple',
+            author: 'Bea Navarro',
+            category: 'art',
+            isbn: '978-1607745677',
+            publishedYear: 2016,
+            coverImage:
+                'https://placehold.co/150?text=Color+Theory+Made+Simple',
+            description:
+                'Understanding and applying color relationships to design.',
+        },
+        {
+            id: '92',
+            title: 'The Copper Coin',
+            author: 'N. J. Carter',
+            category: 'historical-fiction',
+            isbn: '978-1250157034',
+            publishedYear: 2018,
+            coverImage: 'https://placehold.co/150?text=The+Copper+Coin',
+            description:
+                'A historical saga tied to a mysterious coin and a family secret.',
+        },
+        {
+            id: '93',
+            title: 'Yoga for Every Body',
+            author: 'Anya Desai',
+            category: 'health',
+            isbn: '978-1594869772',
+            publishedYear: 2015,
+            coverImage: 'https://placehold.co/150?text=Yoga+for+Every+Body',
+            description:
+                'Inclusive yoga practices and adaptations for all levels.',
+        },
+        {
+            id: '94',
+            title: 'The Secret Library',
+            author: 'Ellis Murray',
+            category: 'fiction',
+            isbn: '978-0399586778',
+            publishedYear: 2013,
+            coverImage: 'https://placehold.co/150?text=The+Secret+Library',
+            description:
+                'A literary mystery set inside a hidden neighborhood library.',
+        },
+        {
+            id: '95',
+            title: 'Type Systems Unpacked',
+            author: 'Monica Reyes',
+            category: 'programming',
+            isbn: '978-0262538337',
+            publishedYear: 2020,
+            coverImage: 'https://placehold.co/150?text=Type+Systems+Unpacked',
+            description:
+                'Practical guide to static typing and type inference across languages.',
+        },
+        {
+            id: '96',
+            title: "Crafting Children's Books",
+            author: 'Poppy James',
+            category: 'design',
+            isbn: '978-1612438345',
+            publishedYear: 2017,
+            coverImage:
+                'https://placehold.co/150?text=Crafting+Childrens+Books',
+            description:
+                "How to write, illustrate, and publish engaging children's stories.",
+        },
+        {
+            id: '97',
+            title: "The Painter's Return",
+            author: 'Gina Russo',
+            category: 'fiction',
+            isbn: '978-1250147287',
+            publishedYear: 2011,
+            coverImage: 'https://placehold.co/150?text=The+Painters+Return',
+            description: 'A novel about art, loss, and creative renewal.',
+        },
+        {
+            id: '98',
+            title: 'Climate Change Basics',
+            author: 'Dr. Omar Hassan',
+            category: 'science',
+            isbn: '978-0262033842',
+            publishedYear: 2019,
+            coverImage: 'https://placehold.co/150?text=Climate+Change+Basics',
+            description:
+                'Clear explanations of climate science and mitigation strategies.',
+        },
+        {
+            id: '99',
+            title: 'The Velvet Thief',
+            author: 'Cordelia Price',
+            category: 'thriller',
+            isbn: '978-1984829313',
+            publishedYear: 2021,
+            coverImage: 'https://placehold.co/150?text=The+Velvet+Thief',
+            description:
+                'A high-stakes heist thriller with unexpected alliances.',
+        },
+        {
+            id: '100',
+            title: 'Homebrewing Handbook',
+            author: 'Nate Gibson',
+            category: 'cooking',
+            isbn: '978-1612434682',
+            publishedYear: 2016,
+            coverImage: 'https://placehold.co/150?text=Homebrewing+Handbook',
+            description:
+                'Beginner to intermediate homebrewing techniques and recipes.',
+        },
+        {
+            id: '101',
+            title: 'The Sculpture Studio',
+            author: 'Marta Beltran',
+            category: 'art',
+            isbn: '978-1607742799',
+            publishedYear: 2014,
+            coverImage: 'https://placehold.co/150?text=The+Sculpture+Studio',
+            description:
+                'Materials, tools, and projects for aspiring sculptors.',
+        },
+        {
+            id: '102',
+            title: 'Roads Less Traveled',
+            author: 'Henry Low',
+            category: 'travel',
+            isbn: '978-0812984587',
+            publishedYear: 2012,
+            coverImage: 'https://placehold.co/150?text=Roads+Less+Traveled',
+            description:
+                'Off-the-beaten-path travel stories and practical tips.',
+        },
+        {
+            id: '103',
+            title: 'The Iron Orchard',
+            author: 'S. M. Greer',
+            category: 'historical-fiction',
+            isbn: '978-1250117241',
+            publishedYear: 2018,
+            coverImage: 'https://placehold.co/150?text=The+Iron+Orchard',
+            description:
+                'A multi-generational saga of labor, land, and survival.',
+        },
+        {
+            id: '104',
+            title: 'Practical Rust',
+            author: 'Andrew L. Fox',
+            category: 'programming',
+            isbn: '978-1718500448',
+            publishedYear: 2021,
+            coverImage: 'https://placehold.co/150?text=Practical+Rust',
+            description:
+                'Rust language techniques for systems and web development.',
+        },
+    ];
 
-  findAll(query: {
-    q?: string;
-    category?: string;
-    page?: number;
-    limit?: number;
-  }) {
-    let filteredBooks = this.books;
+    findAll(query: {
+        q?: string;
+        category?: string;
+        page?: number;
+        limit?: number;
+    }) {
+        let filteredBooks = this.books;
 
-    if (query.q) {
-      const q = query.q.toLowerCase();
-      filteredBooks = filteredBooks.filter(
-        book =>
-          book.title.toLowerCase().includes(q) ||
-          book.author.toLowerCase().includes(q)
-      );
+        if (query.q) {
+            const q = query.q.toLowerCase();
+            filteredBooks = filteredBooks.filter(
+                book =>
+                    book.title.toLowerCase().includes(q) ||
+                    book.author.toLowerCase().includes(q)
+            );
+        }
+
+        if (query.category) {
+            filteredBooks = filteredBooks.filter(
+                book => book.category === query.category
+            );
+        }
+
+        const page = query.page || 1;
+        const limit = query.limit || 10;
+        const startIndex = (page - 1) * limit;
+        const endIndex = startIndex + limit;
+        const paginatedBooks = filteredBooks.slice(startIndex, endIndex);
+
+        return {
+            data: paginatedBooks,
+            pagination: {
+                page,
+                limit,
+                total: filteredBooks.length,
+                totalPages: Math.ceil(filteredBooks.length / limit),
+            },
+        };
     }
 
-    if (query.category) {
-      filteredBooks = filteredBooks.filter(
-        book => book.category === query.category
-      );
+    findOne(id: string): Book {
+        const book = this.books.find(b => b.id === id);
+        if (!book) {
+            throw new NotFoundException('Book not found');
+        }
+        return book;
     }
 
-    const page = query.page || 1;
-    const limit = query.limit || 10;
-    const startIndex = (page - 1) * limit;
-    const endIndex = startIndex + limit;
-    const paginatedBooks = filteredBooks.slice(startIndex, endIndex);
-
-    return {
-      data: paginatedBooks,
-      pagination: {
-        page,
-        limit,
-        total: filteredBooks.length,
-        totalPages: Math.ceil(filteredBooks.length / limit),
-      },
-    };
-  }
-
-  findOne(id: string): Book {
-    const book = this.books.find(b => b.id === id);
-    if (!book) {
-      throw new NotFoundException('Book not found');
+    create(bookData: Omit<Book, 'id' | 'coverImage'>): Book {
+        const id = randomUUID();
+        const coverImage = `https://placehold.co/150?text=${encodeURIComponent(bookData.title)}`;
+        const newBook: Book = {
+            id,
+            ...bookData,
+            coverImage,
+        };
+        this.books.push(newBook);
+        return newBook;
     }
-    return book;
-  }
 
-  create(bookData: Omit<Book, 'id' | 'coverImage'>): Book {
-    const id = randomUUID();
-    const coverImage = `https://placehold.co/150?text=${encodeURIComponent(bookData.title)}`;
-    const newBook: Book = {
-      id,
-      ...bookData,
-      coverImage,
-    };
-    this.books.push(newBook);
-    return newBook;
-  }
-
-  update(id: string, updateData: Partial<Omit<Book, 'id'>>): Book {
-    const bookIndex = this.books.findIndex(b => b.id === id);
-    if (bookIndex === -1) {
-      throw new NotFoundException('Book not found');
+    update(id: string, updateData: Partial<Omit<Book, 'id'>>): Book {
+        const bookIndex = this.books.findIndex(b => b.id === id);
+        if (bookIndex === -1) {
+            throw new NotFoundException('Book not found');
+        }
+        const updatedBook = { ...this.books[bookIndex], ...updateData };
+        this.books[bookIndex] = updatedBook;
+        return updatedBook;
     }
-    const updatedBook = { ...this.books[bookIndex], ...updateData };
-    this.books[bookIndex] = updatedBook;
-    return updatedBook;
-  }
 
-  remove(id: string): void {
-    const bookIndex = this.books.findIndex(b => b.id === id);
-    if (bookIndex === -1) {
-      throw new NotFoundException('Book not found');
+    remove(id: string): void {
+        const bookIndex = this.books.findIndex(b => b.id === id);
+        if (bookIndex === -1) {
+            throw new NotFoundException('Book not found');
+        }
+        this.books.splice(bookIndex, 1);
     }
-    this.books.splice(bookIndex, 1);
-  }
 
-  getCategories(): string[] {
-    const categories = this.books.map(book => book.category);
-    return [...new Set(categories)];
-  }
+    getCategories(): string[] {
+        const categories = this.books.map(book => book.category);
+        return [...new Set(categories)];
+    }
 }

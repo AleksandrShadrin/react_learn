@@ -3,19 +3,19 @@ import { type PropsWithChildren, type ReactElement, useState } from 'react';
 import { type Theme, ThemeContext } from './ThemeContext';
 
 type Props = PropsWithChildren & {
-  theme?: Theme;
+    theme?: Theme;
 };
 
 export default function ThemeContextProvider({
-  children,
+    children,
 }: Props): ReactElement {
-  const [theme, setTheme] = useState<Theme>('light');
-  const toggleTheme = () =>
-    setTheme(prev => (prev === 'light' ? 'dark' : 'light'));
+    const [theme, setTheme] = useState<Theme>('light');
+    const toggleTheme = () =>
+        setTheme(prev => (prev === 'light' ? 'dark' : 'light'));
 
-  return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      {children}
-    </ThemeContext.Provider>
-  );
+    return (
+        <ThemeContext.Provider value={{ theme, toggleTheme }}>
+            {children}
+        </ThemeContext.Provider>
+    );
 }

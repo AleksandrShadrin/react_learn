@@ -4,33 +4,31 @@ import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 export default defineConfig([
-  {
-    ignores: ['dist', 'node_modules', 'build', 'eslint.config.mjs'],
-  },
-  {
-    files: ['**/*.{js,mjs,cjs,ts}'],
-    languageOptions: {
-      globals: {
-        ...globals.node,
-        ...globals.jest,
-      },
-      parser: tseslint.parser,
-      parserOptions: {
-        projectService: true,
-        tsconfigRootDir: import.meta.dirname,
-      },
+    {
+        ignores: ['dist', 'node_modules', 'build', 'eslint.config.mjs'],
     },
-    extends: [
-      tseslint.configs.recommendedTypeCheckedOnly,
-    ],
-  },
-  {
-    files: ['**/*.{js,mjs,cjs,ts}'],
-    rules: {
-      '@typescript-eslint/no-explicit-any': 'off',
-      '@typescript-eslint/no-floating-promises': 'warn',
-      '@typescript-eslint/no-unsafe-argument': 'warn',
-      '@typescript-eslint/no-unused-vars': 'off',
+    {
+        files: ['**/*.{js,mjs,cjs,ts}'],
+        languageOptions: {
+            globals: {
+                ...globals.node,
+                ...globals.jest,
+            },
+            parser: tseslint.parser,
+            parserOptions: {
+                projectService: true,
+                tsconfigRootDir: import.meta.dirname,
+            },
+        },
+        extends: [tseslint.configs.recommendedTypeCheckedOnly],
     },
-  },
+    {
+        files: ['**/*.{js,mjs,cjs,ts}'],
+        rules: {
+            '@typescript-eslint/no-explicit-any': 'off',
+            '@typescript-eslint/no-floating-promises': 'warn',
+            '@typescript-eslint/no-unsafe-argument': 'warn',
+            '@typescript-eslint/no-unused-vars': 'off',
+        },
+    },
 ]);

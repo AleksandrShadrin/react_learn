@@ -1,11 +1,23 @@
-import type { QueryClient } from "@tanstack/react-query";
+import type { QueryClient } from '@tanstack/react-query';
 import {
     Link,
     Outlet,
-    createRootRouteWithContext, useLocation
-} from "@tanstack/react-router";
-import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
-import { ModeToggle } from "@/components/mode-toggle";
+    createRootRouteWithContext,
+    useLocation,
+} from '@tanstack/react-router';
+import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
+import { HomeIcon } from 'lucide-react';
+
+import { ModeToggle } from '@/components/mode-toggle';
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbList,
+    BreadcrumbPage,
+    BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Separator } from '@/components/ui/separator';
 import {
     Sidebar,
     SidebarContent,
@@ -21,25 +33,16 @@ import {
     SidebarProvider,
     SidebarRail,
     SidebarTrigger,
-} from "@/components/ui/sidebar";
-import {
-    Breadcrumb,
-    BreadcrumbItem, BreadcrumbList,
-    BreadcrumbPage,
-    BreadcrumbSeparator
-} from "@/components/ui/breadcrumb";
-import { Separator } from "@/components/ui/separator";
-import { HomeIcon } from "lucide-react";
-import type { FileRoutesByTo } from "@/routeTree.gen";
-
+} from '@/components/ui/sidebar';
+import type { FileRoutesByTo } from '@/routeTree.gen';
 
 type RouterContext = {
     queryClient: QueryClient;
 };
 
-const navItems: { label: string, to: keyof FileRoutesByTo }[] = [
-    { label: "Dashboard", to: '/', },
-    { label: "Books", to: "/books", },
+const navItems: { label: string; to: keyof FileRoutesByTo }[] = [
+    { label: 'Dashboard', to: '/' },
+    { label: 'Books', to: '/books' },
 ];
 
 function isRouteActive(pathname: string, routePath: string): boolean {
@@ -53,40 +56,40 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 });
 
 function RootComponent() {
-
     return (
         <SidebarProvider>
             <AppSidebar />
-            <SidebarInset className="flex min-h-screen flex-1 flex-col bg-muted/20">
-                <header className="flex h-16 shrink-0 items-center gap-2 border-b bg-background px-4 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
-                    <SidebarTrigger className="-ml-1" />
-                    <Separator orientation="vertical" className="mr-2 h-4" />
+            <SidebarInset className='flex min-h-screen flex-1 flex-col bg-muted/20'>
+                <header className='flex h-16 shrink-0 items-center gap-2 border-b bg-background px-4 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12'>
+                    <SidebarTrigger className='-ml-1' />
+                    <Separator orientation='vertical' className='mr-2 h-4' />
                     <Breadcrumb>
                         <BreadcrumbList>
-                            <BreadcrumbSeparator className="hidden md:block" />
+                            <BreadcrumbSeparator className='hidden md:block' />
                             <BreadcrumbItem>
                                 <BreadcrumbPage>{'location'}</BreadcrumbPage>
                             </BreadcrumbItem>
                         </BreadcrumbList>
                     </Breadcrumb>
                 </header>
-                <main className="flex-1 px-6 pt-6">
-                    <Outlet />
+                <main style={{ height: 'calc(100vh - var(--spacing) * 16)' }}>
+                    <ScrollArea className='pl-6 pt-6 h-full'>
+                        <Outlet />
+                    </ScrollArea>
                 </main>
             </SidebarInset>
-            <TanStackRouterDevtools position="bottom-right" />
+            <TanStackRouterDevtools position='bottom-right' />
         </SidebarProvider>
     );
 }
 
 function AppSidebar() {
-
     const location = useLocation();
 
     return (
-        <Sidebar collapsible="icon">
+        <Sidebar collapsible='icon'>
             <SidebarHeader>
-                <Link to="/" className="text-lg font-semibold">
+                <Link to='/' className='text-lg font-semibold'>
                     <HomeIcon />
                 </Link>
             </SidebarHeader>
@@ -96,9 +99,15 @@ function AppSidebar() {
                     <SidebarGroupLabel>Navigation</SidebarGroupLabel>
                     <SidebarGroupContent>
                         <SidebarMenu>
-                            {navItems.map((item) => (
+                            {navItems.map(item => (
                                 <SidebarMenuItem key={item.to}>
-                                    <SidebarMenuButton asChild isActive={isRouteActive(location.pathname, item.to)}>
+                                    <SidebarMenuButton
+                                        asChild
+                                        isActive={isRouteActive(
+                                            location.pathname,
+                                            item.to
+                                        )}
+                                    >
                                         <Link to={item.to}>{item.label}</Link>
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>

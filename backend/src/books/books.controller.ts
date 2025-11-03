@@ -1,65 +1,68 @@
 import {
-  Controller,
-  Get,
-  Post,
-  Put,
-  Delete,
-  Body,
-  Param,
-  Query,
-  HttpCode,
-  HttpStatus,
+    Body,
+    Controller,
+    Delete,
+    Get,
+    HttpCode,
+    HttpStatus,
+    Param,
+    Post,
+    Put,
+    Query,
 } from '@nestjs/common';
+import { setTimeout } from 'timers/promises';
+
 import { BooksService } from './books.service';
 import type { Book } from './books.service';
 
 @Controller('books')
 export class BooksController {
-  constructor(private readonly booksService: BooksService) {}
+    constructor(private readonly booksService: BooksService) {}
 
-  @Get()
-  findAll(
-    @Query('q') q?: string,
-    @Query('category') category?: string,
-    @Query('page') page?: string,
-    @Query('limit') limit?: string,
-  ) {
-    const query = {
-      q,
-      category,
-      page: page ? parseInt(page, 10) : undefined,
-      limit: limit ? parseInt(limit, 10) : undefined,
-    };
-    return this.booksService.findAll(query);
-  }
+    @Get()
+    findAll(
+        @Query('q') q?: string,
+        @Query('category') category?: string,
+        @Query('page') page?: string,
+        @Query('limit') limit?: string
+    ) {
+        const query = {
+            q,
+            category,
+            page: page ? parseInt(page, 10) : undefined,
+            limit: limit ? parseInt(limit, 10) : undefined,
+        };
 
-  @Get(':id')
-  findOne(@Param('id') id: string): Book {
-    return this.booksService.findOne(id);
-  }
+        return this.booksService.findAll(query);
+    }
 
-  @Post()
-  @HttpCode(HttpStatus.CREATED)
-  create(@Body() createBookDto: Omit<Book, 'id' | 'coverImage'>): Book {
-    return this.booksService.create(createBookDto);
-  }
+    @Get(':id')
+    findOne(@Param('id') id: string): Book {
+        return this.booksService.findOne(id);
+    }
 
-  @Put(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateBookDto: Partial<Omit<Book, 'id'>>,
-  ): Book {
-    return this.booksService.update(id, updateBookDto);
-  }
+    @Post()
+    @HttpCode(HttpStatus.CREATED)
+    create(@Body() createBookDto: Omit<Book, 'id' | 'coverImage'>): Book {
+        return this.booksService.create(createBookDto);
+    }
 
-  @Delete(':id')
-  @HttpCode(HttpStatus.NO_CONTENT)
-  remove(@Param('id') id: string): void {
-    this.booksService.remove(id);
-  }
+    @Put(':id')
+    update(
+        @Param('id') id: string,
+        @Body() updateBookDto: Partial<Omit<Book, 'id'>>
+    ): Book {
+        return this.booksService.update(id, updateBookDto);
+    }
 
-  @Get('categories')
-  getCategories(): string[] {
-    return this.booksService.getCategories();
-  }
+    @Delete(':id')
+    @HttpCode(HttpStatus.NO_CONTENT)
+    remove(@Param('id') id: string): void {
+        this.booksService.remove(id);
+    }
+
+    @Get('categories')
+    getCategories(): string[] {
+        return this.booksService.getCategories();
+    }
 }
