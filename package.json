@@ -7,7 +7,7 @@
         "frontend"
     ],
     "scripts": {
-        "backend": "npm run start:dev --workspace=backend",
+        "backend": "npm run start:debug --workspace=backend",
         "frontend": "npm run dev --workspace=frontend",
         "format": "prettier --write \"backend/src/**/*.ts\" \"backend/test/**/*.ts\" \"frontend/src/**/*.{ts,tsx}\" \"frontend/**/*.ts\" \"frontend/**/*.tsx\" --ignore-path .prettierignore",
         "lint": "npm run lint --workspace=backend && npm run lint --workspace=frontend",

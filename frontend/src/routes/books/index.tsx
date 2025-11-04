@@ -40,7 +40,6 @@ export const Route = createFileRoute('/books/')({
     component: BooksComponent,
     errorComponent: () => <div>not found</div>,
     pendingComponent: PendingComponent,
-    staleTime: 10,
 });
 
 function PendingComponent() {

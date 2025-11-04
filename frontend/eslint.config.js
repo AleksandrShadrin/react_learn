@@ -27,6 +27,7 @@ export default defineConfig([
             'react/jsx-no-useless-fragment': 'warn',
             'react/no-unstable-nested-components': 'error',
             'react/prop-types': 'off',
+            'react/no-children-prop': 'off',
             quotes: [2, 'single', { avoidEscape: true }],
         },
         languageOptions: {
